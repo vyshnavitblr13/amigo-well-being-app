@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }} # Docker Hub token/password stored in repository secrets
 
       - name: Build Docker image # Step 6: Build the Docker image
-        run: docker build -t ${{ secrets.DOCKER_USER }}/demo-app:latest . # Tag image with Docker Hub username and 'latest'
+        run: docker build -t ${{ secrets.DOCKER_USER }}/amigo-wellbeing-app:latest . # Tag image with Docker Hub username and 'latest'
 
       - name: Push Docker image # Step 7: Push the Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USER }}/demo-app:latest # Push image to Docker Hub repository
+        run: docker push ${{ secrets.DOCKER_USER }}/amigo-wellbeing-app:latest # Push image to Docker Hub repository
