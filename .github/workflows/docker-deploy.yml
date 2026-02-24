@@ -32,3 +32,6 @@ jobs:
 
       - name: Push Docker Image # Step 6: Upload the built Docker image to Docker Hub registry
         run: docker push ${{ secrets.DOCKER_USER }}/amigo-wellbeing-app:latest # Push the image to Docker Hub repository
+
+      - name: Trigger Render Deploy Hook # Step 7: Trigger deployment on Render hosting platform
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }} # Send POST request to Render webhook URL stored in secrets to auto-deploy
