@@ -1,0 +1,34 @@
+name: Auto Build & Deploy to Docker Hub # Name of the GitHub Actions workflow
+
+on:
+  push: # Trigger the workflow on push events
+    branches:
+      - main   # Only run this workflow when code is pushed to the main branch
+
+jobs:
+  build-and-push: # Define a job named 'build-and-push' that builds and pushes Docker image
+    runs-on: ubuntu-latest # Execute this job on the latest Ubuntu runner
+
+    steps:
+      - name: Checkout Code # Step 1: Clone the repository code
+        uses: actions/checkout@v4 # Use GitHub's official checkout action (version 4)
+
+      - name: Set up Node
+        uses: actions/setup-node@v4 # Use GitHub's official Node.js setup action
+        with:
+          node-version: 18 # Install Node.js version 18
+
+      - name: Install dependencies # Step 3: Install npm packages required by the app
+        run: npm install # Execute npm install to fetch dependencies from package.json
+
+      - name: Build Docker Image # Step 4: Build the Docker container image
+        run: docker build -t ${{ secrets.DOCKER_USER }}/amigo-wellbeing-app:latest . # Build image with tag: USERNAME/amigo-wellbeing-app:latest-1
+
+      - name: Login to Docker Hub # Step 5: Authenticate with Docker Hub using stored secrets
+        uses: docker/login-action@v3 # Use Docker's official login action
+        with:
+          username: ${{ secrets.DOCKER_USER }} # Docker Hub username from repository secrets
+          password: ${{ secrets.DOCKER_TOKEN }} # Docker Hub access token from repository secrets
+
+      - name: Push Docker Image # Step 6: Upload the built Docker image to Docker Hub registry
+        run: docker push ${{ secrets.DOCKER_USER }}/amigo-wellbeing-app:latest # Push the image to Docker Hub repository
